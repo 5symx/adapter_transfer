@@ -32,6 +32,9 @@ from sklearn.metrics import accuracy_score
 # Load the SST-2 dataset
 dataset = load_dataset("glue", "sst2")
 
+# print(set(dataset["validation"]["label"])) # 0 , 1
+
+
 test_texts = dataset["validation"]["sentence"]
 test_labels = dataset["validation"]["label"]
 # Tokenize dataset
@@ -43,6 +46,9 @@ with torch.no_grad():
 
 # Get predictions
 predictions = torch.argmax(logits, dim=-1).numpy()
+
+# print(predictions[:5])  # Inspect first few predictions -- test for 
+# print(predictions.shape)  # Check output dimensions
 
 # Compute accuracy
 accuracy = accuracy_score(test_labels, predictions)

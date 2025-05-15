@@ -4,7 +4,7 @@ from datasets import load_dataset
 from sklearn.metrics import accuracy_score
 import argparse
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
-
+from transformers import AutoModel
 # Set up argument parsing
 parser = argparse.ArgumentParser(description="Load different transformer models for classification.")
 parser.add_argument("--model_name", type=str, required=True, help="Pretrained model name (e.g., roberta-large, textattack/roberta-base-SST-2)")
@@ -13,7 +13,7 @@ parser.add_argument("--model_name", type=str, required=True, help="Pretrained mo
 args = parser.parse_args()
 
 # Load model and tokenizer dynamically
-model = AutoModelForSequenceClassification.from_pretrained(args.model_name)
+model = AutoModel.from_pretrained(args.model_name)
 tokenizer = AutoTokenizer.from_pretrained(args.model_name)
 
 print(f"Loaded model: {args.model_name}")
@@ -32,11 +32,15 @@ with torch.no_grad():
 # Get predictions
 predictions = torch.argmax(logits, dim=-1).numpy()
 
-# Compute accuracy
-accuracy = accuracy_score(test_labels, predictions)
-print(f"Validation Accuracy: {accuracy:.4f}")
 
-from sklearn.metrics import classification_report
+print(predictions[:5])  # Inspect first few predictions
+print(predictions.shape)  # Check output dimensions
 
-print(classification_report(test_labels, predictions, target_names=["negative", "positive"]))
+# # Compute accuracy
+# accuracy = accuracy_score(test_labels, predictions)
+# print(f"Validation Accuracy: {accuracy:.4f}")
+
+# from sklearn.metrics import classification_report
+
+# print(classification_report(test_labels, predictions, target_names=["negative", "positive"]))
 
